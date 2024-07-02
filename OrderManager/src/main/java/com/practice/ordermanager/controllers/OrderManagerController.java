@@ -32,5 +32,10 @@ public class OrderManagerController {
     public ResponseEntity<OrderNumberDto> deleteLastNumber() {
         return ResponseEntity.ok(orderManagerService.deleteLastNumber());
     }
+    @GetMapping("/solveNumber/{orderNumber}")
+    public ResponseEntity<OrderNumberDto> solveNumber(@PathVariable int orderNumber) {
+        return ResponseEntity.ok(orderManagerService.solveNumber(orderNumber));
+    }
+
 
 }

@@ -5,6 +5,7 @@ import com.practice.ordermanager.models.OrderNumberDto;
 import com.practice.ordermanager.models.OrderNumberStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -45,8 +46,17 @@ public class OrderManagerServiceImpl implements OrderManagerService {
         return convertToDto(newNumber);
     }
 
+    @Override
+    public OrderNumberDto solveNumber(int orderNumber) {
+        orderNumbers.stream().filter(orderNumberDo -> orderNumberDo.getOrderNumber() == orderNumber).findFirst().ifPresent(orderNumberDo -> orderNumberDo.setStatus(OrderNumberStatus.SOLVED));
+        recalculateLineNumbers();
+        return getActiveNumber();
+    }
+
     private OrderNumberDto convertToDto(OrderNumberDo orderNumberDo) {
-        return new OrderNumberDto(orderNumberDo.getOrderNumber(), orderNumberDo.getDate(), orderNumberDo.getLineNumber());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(orderNumberDo.getDate());
+        return new OrderNumberDto(orderNumberDo.getOrderNumber(), formattedDate, orderNumberDo.getLineNumber());
     }
 
     private int getLineNumber(int orderNumber) {
@@ -54,5 +64,9 @@ public class OrderManagerServiceImpl implements OrderManagerService {
             return 0;
         }
         return (int) orderNumbers.stream().filter(orderNumberDo -> orderNumberDo.getOrderNumber() < (orderNumber)).filter(orderNumberDo -> !orderNumberDo.getStatus().equals(OrderNumberStatus.SOLVED)).count();
+    }
+
+    private void recalculateLineNumbers() {
+        orderNumbers.stream().filter(orderNumberDo -> orderNumberDo.getStatus().equals(OrderNumberStatus.ACTIVE)).forEach(orderNumberDo -> orderNumberDo.setLineNumber(getLineNumber(orderNumberDo.getOrderNumber())));
     }
 }

@@ -1,15 +1,13 @@
 package com.practice.ordermanager.models;
 
-import java.util.Date;
-
 public class OrderNumberDto {
     private int orderNumber;
-    private Date Date;
+    private String date;
     private int lineNumber;
 
-    public OrderNumberDto(int orderNumber, java.util.Date date, int lineNumber) {
+    public OrderNumberDto(int orderNumber, String date, int lineNumber) {
         this.orderNumber = orderNumber;
-        Date = date;
+        this.date = date;
         this.lineNumber = lineNumber;
     }
 
@@ -24,12 +22,12 @@ public class OrderNumberDto {
         this.orderNumber = orderNumber;
     }
 
-    public java.util.Date getDate() {
-        return Date;
+    public String getDate() {
+        return date;
     }
 
-    public void setDate(java.util.Date date) {
-        Date = date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getLineNumber() {

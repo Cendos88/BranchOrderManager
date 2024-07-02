@@ -10,4 +10,6 @@ public interface OrderManagerService {
     OrderNumberDto deleteLastNumber();
 
     OrderNumberDto generateNewNumber();
+
+    OrderNumberDto solveNumber(int orderNumber);
 }
