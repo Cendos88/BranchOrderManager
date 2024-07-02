@@ -1,13 +1,11 @@
 package com.practice.ordermanager.controllers;
 
 
+import com.practice.ordermanager.models.OrderNumberDto;
 import com.practice.ordermanager.services.OrderManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/ordermanager")
@@ -21,17 +19,17 @@ public class OrderManagerController {
     }
 
     @GetMapping("/activeNumber")
-    public ResponseEntity<?> getActiveNumber() {
+    public ResponseEntity<OrderNumberDto> getActiveNumber() {
         return ResponseEntity.ok(orderManagerService.getActiveNumber());
     }
 
     @GetMapping("/generateNewNumber")
-    public ResponseEntity<?> generateNewNumber() {
+    public ResponseEntity<OrderNumberDto> generateNewNumber() {
         return ResponseEntity.ok(orderManagerService.generateNewNumber());
     }
 
     @DeleteMapping("/deleteLastNumber")
-    public ResponseEntity<?> deleteLastNumber() {
+    public ResponseEntity<OrderNumberDto> deleteLastNumber() {
         return ResponseEntity.ok(orderManagerService.deleteLastNumber());
     }
 

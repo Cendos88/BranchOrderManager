@@ -5,13 +5,15 @@ import com.practice.ordermanager.models.OrderNumberDto;
 import com.practice.ordermanager.models.OrderNumberStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
 @Service
 public class OrderManagerServiceImpl implements OrderManagerService {
-    List<OrderNumberDo> orderNumbers;
+    private final List<OrderNumberDo> orderNumbers = new ArrayList<>();
     private final AtomicInteger orderNumber = new AtomicInteger(0);
 
     @Override
@@ -38,7 +40,6 @@ public class OrderManagerServiceImpl implements OrderManagerService {
     public OrderNumberDto generateNewNumber() {
         Date numberDate = new Date();
         int number = orderNumber.incrementAndGet();
-
         OrderNumberDo newNumber = new OrderNumberDo(number, numberDate, getLineNumber(number), OrderNumberStatus.ACTIVE);
         orderNumbers.add(newNumber);
         return convertToDto(newNumber);
@@ -49,9 +50,9 @@ public class OrderManagerServiceImpl implements OrderManagerService {
     }
 
     private int getLineNumber(int orderNumber) {
-        if (orderNumbers==null || orderNumbers.isEmpty()) {
+        if (orderNumbers.isEmpty()) {
             return 0;
         }
-        return (int) orderNumbers.stream().filter(orderNumberDo -> orderNumberDo.getOrderNumber()<(orderNumber)).filter(orderNumberDo -> !orderNumberDo.getStatus().equals(OrderNumberStatus.SOLVED)).count();
+        return (int) orderNumbers.stream().filter(orderNumberDo -> orderNumberDo.getOrderNumber() < (orderNumber)).filter(orderNumberDo -> !orderNumberDo.getStatus().equals(OrderNumberStatus.SOLVED)).count();
     }
 }
